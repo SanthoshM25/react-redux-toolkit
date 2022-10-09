@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+
+import { useSelector, useDispatch } from "react-redux";
+import { updateUser } from "./Redux/user";
 
 function App() {
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const [userData, setUserData] = useState({
+    name: user.name,
+    email: user.email,
+  });
+
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>{user.name}</div>
+      <div>{user.email}</div>
+      <input name="name" onChange={handleChange} />
+      <input name="email" onChange={handleChange} />
+      <button onClick={() => dispatch(updateUser(userData))}>
+        update data
+      </button>
     </div>
   );
 }
